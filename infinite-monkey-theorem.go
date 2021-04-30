@@ -13,7 +13,6 @@ import (
 
 // decalre globals
 var _madeClone = false
-var _mutex = sync.Mutex{}
 var _waitGroup = sync.WaitGroup{}
 var _totalCount = 0
 var _context context.Context
@@ -50,17 +49,13 @@ func generateClone(content []byte) {
 					}
 					isClone = true
 				}
-				// lock before incrementing the count of tries
-				_mutex.Lock()
-				_totalCount++
-				_mutex.Unlock()
 		}
 	}
 	// end the other routines
 	_cancel()
 	_madeClone = true
 	if (isClone)  {
-		fmt.Println("The monkeys have generated a clone of the original file in", _totalCount, "tries!")
+		fmt.Println("The monkeys have generated a clone of the original file!")
 		fmt.Println("Generated content: ", string(clonedContent))
 		fmt.Println("Original  content: ", string(content))
 	}
@@ -98,6 +93,9 @@ func main() {
 		fmt.Println("Error reading from file " + fileName)
 	}
 
+	// get start time
+	start := time.Now()
+
 	// run a go routine for each monkey
 	for i := 0; i < monkeys; i++ {
 		_waitGroup.Add(1)
@@ -107,6 +105,11 @@ func main() {
 	// wait until routines finish executing
 	_waitGroup.Wait()
 
+	// get end time and subtract the start time from it
+	end := time.Now()
+	elapsed := end.Sub(start)
+	
+	fmt.Println("Generated a clone in", elapsed, "!")
 	fmt.Println("\nPress enter to exit.")
 	fmt.Scanf("Exit")
 }

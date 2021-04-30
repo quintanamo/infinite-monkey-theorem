@@ -39,7 +39,7 @@ func generateClone(content []byte) {
 			default:
 				for i, _ := range content {
 					// generate random bytes in the array
-					clonedContent[i] = byte(rand.Intn(93) + 33)
+					clonedContent[i] = byte(rand.Intn(126) + 0)
 				}
 				// check bytes in array to see if it matches the original
 				for i, v := range clonedContent {

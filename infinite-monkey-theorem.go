@@ -91,6 +91,7 @@ func main() {
 	fileContent, err := ioutil.ReadFile(fileName)
 	if (err != nil) {
 		fmt.Println("Error reading from file " + fileName)
+		return
 	}
 
 	// get start time
